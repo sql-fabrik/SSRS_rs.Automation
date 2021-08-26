@@ -1,0 +1,28 @@
+
+Public Sub Main()
+
+TRY
+
+ DIM historyID as string = Nothing
+ DIM deviceInfo as string = Nothing
+ DIM extension as string = Nothing
+ DIM encoding as string
+ DIM mimeType as string = "application/Excel"
+ DIM warnings() AS Warning = Nothing
+ DIM streamIDs() as string = Nothing
+ DIM results() as Byte
+
+ rs.Credentials = System.Net.CredentialCache.DefaultCredentials
+ rs.LoadReport(REPORTSERVER_FOLDER, historyID)
+    
+ results = rs.Render(FORMAT, deviceInfo, extension, mimeType, encoding, warnings, streamIDs)
+
+ DIM stream As FileStream = File.OpenWrite(FILENAME)
+ stream.Write(results, 0, results.Length)
+ stream.Close()
+ 
+Catch e As IOException
+  Console.WriteLine(e.Message)
+End Try
+
+End Sub

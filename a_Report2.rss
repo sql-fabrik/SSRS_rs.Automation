@@ -1,0 +1,35 @@
+
+Public Sub Main()
+
+TRY
+
+DIM deviceInfo as string = Nothing
+DIM extension as string = Nothing
+DIM mimeType as string = "application/Excel"
+DIM encoding as string
+DIM warnings() AS Warning = Nothing
+DIM streamIDs() as string = Nothing
+DIM results() as Byte
+
+
+Dim parameters(0) as ParameterValue
+
+parameters(0) = new ParameterValue()      
+parameters(0).Name = "Rechnungsnummer"    
+parameters(0).Value = RECHNR              
+
+ rs.Credentials = System.Net.CredentialCache.DefaultCredentials
+ rs.LoadReport(REPORTSERVER_FOLDER, Nothing)     
+ rs.SetExecutionParameters(parameters,"en-us")   
+
+ results = rs.Render(FORMAT, deviceInfo, extension, mimeType, encoding, warnings, streamIDs)
+
+ DIM stream As FileStream = File.OpenWrite(FILENAME)
+ stream.Write(results, 0, results.Length)
+ stream.Close()
+ 
+Catch e As IOException
+  Console.WriteLine(e.Message)
+End Try
+
+End Sub
